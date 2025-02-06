@@ -12,26 +12,26 @@ def read_text_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return file.read()
 
-def decrypt_caesar_cipher(text, shift):
-    alphabet = "abcdefghijklmnñopqrstuvwxyz"
-    decrypted_text = ''
+def caesar_cipher_Decifrado(text, shift):
+    alfa = "abcdefghijklmnñopqrstuvwxyz"
+    texto_decif = ''
     
-    for char in text:
-        if char in alphabet:
-            new_index = (alphabet.index(char) - shift) % len(alphabet)
-            decrypted_text += alphabet[new_index]
+    for x in text:
+        if x in alfa:
+            new_index = (alfa.index(x) - shift) % len(alfa)
+            texto_decif += alfa[new_index]
         else:
-            decrypted_text += char
+            texto_decif += x
     
-    return decrypted_text
+    return texto_decif
 
-def find_best_shift(text, theoretical_frequencies):
+def best_shift_(text, theoretical_frequencies):
     best_shift = 0
     best_match = float('inf')
-    clean_text_data = clean_text(text)
+    data_clean = clean_text(text)
     
     for shift in range(27):  
-        decrypted_text = decrypt_caesar_cipher(clean_text_data, shift)
+        decrypted_text = caesar_cipher_Decifrado(data_clean, shift)
         observed_frequencies = calculate_frequencies(decrypted_text)
         
         difference = sum(abs(observed_frequencies.get(letter, 0) - theoretical_frequencies.get(letter, 0)) for letter in theoretical_frequencies)
@@ -53,12 +53,12 @@ def main():
         'x': 0.22, 'y': 0.90, 'z': 0.52
     }
     
-    best_shift = find_best_shift(text, theoretical_frequencies)
-    decrypted_text = decrypt_caesar_cipher(clean_text(text), best_shift)
+    best_corr = best_shift_(text, theoretical_frequencies)
+    final_message = caesar_cipher_Decifrado(clean_text(text), best_corr) 
     
-    print(f"El mejor desplazamiento encontrado es: {best_shift}")
+    print(f"El mejor desplazamiento encontrado es: {best_corr}")
     print("Texto descifrado:")
-    print(decrypted_text)
+    print(final_message)
     
 if __name__ == "__main__":
     main()

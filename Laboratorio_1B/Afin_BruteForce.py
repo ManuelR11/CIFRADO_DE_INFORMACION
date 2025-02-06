@@ -19,27 +19,27 @@ def mod_inverse(a, m):
             return x
     return None
 
-def decrypt_affine_cipher(text, a, b):
-    alphabet = "abcdefghijklmnñopqrstuvwxyz"
-    m = len(alphabet)
+def affine_cipher_decifrado(text, a, b):
+    alfa = "abcdefghijklmnñopqrstuvwxyz"
+    m = len(alfa)
     a_inv = mod_inverse(a, m)
     if a_inv is None:
         return None
     
-    decrypted_text = ''
-    for char in text:
-        if char in alphabet:
-            new_index = (a_inv * (alphabet.index(char) - b)) % m
-            decrypted_text += alphabet[new_index]
+    texto_decif = ''
+    for x in text:
+        if x in alfa:
+            new_index = (a_inv * (alfa.index(x) - b)) % m
+            texto_decif += alfa[new_index]
         else:
-            decrypted_text += char
+            texto_decif += x
     
-    return decrypted_text
+    return texto_decif
 
-def find_best_affine_keys(text, theoretical_frequencies):
+def best_key(text, theoretical_frequencies):
     best_a, best_b = 1, 1
     best_match = float('inf')
-    clean_text_data = clean_text(text)
+    clean_data = clean_text(text)
     m = 27  
     
     for a in range(1, 17):
@@ -47,7 +47,7 @@ def find_best_affine_keys(text, theoretical_frequencies):
             continue
         
         for b in range(1, 17):
-            decrypted_text = decrypt_affine_cipher(clean_text_data, a, b)
+            decrypted_text = affine_cipher_decifrado(clean_data, a, b)
             if decrypted_text is None:
                 continue
             
@@ -63,7 +63,7 @@ def find_best_affine_keys(text, theoretical_frequencies):
     return best_a, best_b
 
 def main():
-    file_path = 'Laboratorio_1B/afines.txt'  # Ruta del archivo cifrado
+    file_path = 'Laboratorio_1B/afines.txt'
     text = read_text_file(file_path)
     
     theoretical_frequencies = {
@@ -73,12 +73,12 @@ def main():
         'x': 0.22, 'y': 0.90, 'z': 0.52
     }
     
-    best_a, best_b = find_best_affine_keys(text, theoretical_frequencies)
-    decrypted_text = decrypt_affine_cipher(clean_text(text), best_a, best_b)
+    best_a, best_b = best_key(text, theoretical_frequencies)
+    final_message = affine_cipher_decifrado(clean_text(text), best_a, best_b)
     
     print(f"Los mejores valores encontrados son: a = {best_a}, b = {best_b}")
     print("Texto descifrado:")
-    print(decrypted_text)
+    print(final_message)
     
 if __name__ == "__main__":
     main()
