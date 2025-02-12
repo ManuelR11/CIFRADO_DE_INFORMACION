@@ -1,4 +1,4 @@
-# README - Corrupción de Imagen al Aplicar XOR
+# Corrupción de Imagen al Aplicar XOR
 
 ## Introducción
 Este documento explica por qué una imagen puede corromperse al aplicar la operación XOR con una llave de texto y cómo evitar este problema.
