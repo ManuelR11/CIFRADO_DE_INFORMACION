@@ -28,3 +28,5 @@
 - Ferguson, N., & Schneier, B. (2003). Practical Cryptography. Wiley.
 - Menezes, A., van Oorschot, P., & Vanstone, S. (1996). Handbook of Applied Cryptography. CRC Press.
 
+- https://chatgpt.com/share/67ad7e4f-b170-8003-8b29-ae4652ac4203
+
