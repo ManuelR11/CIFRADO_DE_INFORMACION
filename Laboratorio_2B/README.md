@@ -21,7 +21,7 @@
 - Considerar cifrados más adecuados como AES en lugar de XOR.
 
 ## Imagen Final de XOR
-![Imagen Final](Laboratorio_2B\imagen_xor.png "Imagen Final")
+![Imagen Final](https://github.com/ManuelR11/CIFRADO_DE_INFORMACION/blob/6019b978211252fdcb33dabddcac0bbb409d53ec/Laboratorio_2B/imagen_xor.png "Imagen Final")
 
 ## Bibliografía
 - Schneier, B. (1996). Applied Cryptography. Wiley.
