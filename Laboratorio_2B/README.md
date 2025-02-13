@@ -20,6 +20,9 @@
 - Verificar que la cabecera de la imagen no se altere.
 - Considerar cifrados más adecuados como AES en lugar de XOR.
 
+## Imagen Final de XOR
+![Imagen Final](Laboratorio_2B\imagen_xor.png "Imagen Final")
+
 ## Bibliografía
 - Schneier, B. (1996). Applied Cryptography. Wiley.
 - Ferguson, N., & Schneier, B. (2003). Practical Cryptography. Wiley.

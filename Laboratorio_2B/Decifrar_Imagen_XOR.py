@@ -1,33 +1,41 @@
 import base64
-from Script_Criptografia import ascii_to_binary, binary_to_ascii, xor_binary, extend_key
+import numpy as np
+from PIL import Image
+from Script_Criptografia import ascii_to_binary, binary_to_ascii
 
-def decode_xor_image(image_path, key):
-    # Leer la imagen y convertirla a Base64
-    with open(image_path, "rb") as image_file:
-        image_bytes = image_file.read()
-        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+def image_to_base64(image_path):
+    """Convierte una imagen a Base64"""
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode('utf-8')
+
+def base64_to_bytes(base64_str):
+    """Convierte Base64 a bytes"""
+    return base64.b64decode(base64_str)
+
+def xor_images(image_path1, image_path2, output_path):
+    """Aplica XOR entre dos imágenes a color y guarda el resultado"""
+    # Cargar imágenes y redimensionarlas al mismo tamaño
+    img1 = Image.open(image_path1).convert('RGB')
+    img2 = Image.open(image_path2).convert('RGB')
+    img2 = img2.resize(img1.size)
     
-    # Convertir la base64 a binario
-    binary_image = ' '.join(format(byte, '08b') for byte in base64.b64decode(image_base64))
+    # Convertir imágenes a arrays NumPy
+    img1_array = np.array(img1)
+    img2_array = np.array(img2)
     
-    # Extender la llave al tamaño del binario de la imagen
-    extended_key = extend_key(key, len(image_bytes))
-    binary_key = ' '.join(format(ord(char), '08b') for char in extended_key)
+    # Aplicar XOR en cada canal de color (R, G, B)
+    xor_result_array = np.bitwise_xor(img1_array, img2_array)
     
-    # Aplicar XOR entre la imagen en binario y la llave
-    decrypted_binary = xor_binary(binary_image, binary_key)
+    # Convertir a imagen y guardar
+    xor_result_img = Image.fromarray(xor_result_array)
+    xor_result_img.save(output_path)
     
-    # Convertir el binario resultante de vuelta a bytes
-    decrypted_bytes = bytes(int(b, 2) for b in decrypted_binary.split())
-    
-    # Guardar la imagen descifrada
-    with open("imagen_descifrada.png", "wb") as output_file:
-        output_file.write(decrypted_bytes)
-    
-    print("Imagen descifrada y guardada como 'imagen_descifrada.png'")
+    print("Imagen XOR generada y guardada como:", output_path)
 
 # Parámetros
-image_path = "Laboratorio_2B\imagen_xor.png"  # Ruta de la imagen cifrada
-key = "cifrados_2025"  # Llave para el XOR
+image_path1 = r"Laboratorio_2B/Baseball_back.png"  # Ruta de la primera imagen
+image_path2 = r"Laboratorio_2B/Baseball.png"  # Ruta de la segunda imagen
+output_path = r"Laboratorio_2B/imagen_xor.png"
 
-decode_xor_image(image_path, key)
+# Ejecutar XOR de imágenes
+xor_images(image_path1, image_path2, output_path)
