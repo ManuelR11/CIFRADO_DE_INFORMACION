@@ -1,4 +1,4 @@
-# README - Cifrado con Keystream y XOR
+# Cifrado con Keystream y XOR
 
 ## Descripción
 
@@ -60,5 +60,4 @@ Si el keystream es más corto que el mensaje, se repetirá, lo que puede introdu
 - Asegurar que la semilla utilizada sea verdaderamente aleatoria y única para cada cifrado.
 - En aplicaciones críticas, considerar el uso de cifrados autenticados como AES-GCM en lugar de simples XOR con keystreams pseudoaleatorios.
 
-Manuel Rodas 21509
 
