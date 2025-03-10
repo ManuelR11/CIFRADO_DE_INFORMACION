@@ -14,7 +14,7 @@ def des_decrypt_ecb(key, ciphertext):
     decrypted = unpad(cipher.decrypt(ciphertext), DES.block_size)
     return decrypted.decode()
 
-# Prueba con texto plano
+
 if __name__ == "__main__":
     plaintext = "Hola DES"  # Texto directo
 

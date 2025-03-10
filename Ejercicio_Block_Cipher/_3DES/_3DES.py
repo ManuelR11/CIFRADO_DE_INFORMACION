@@ -15,7 +15,6 @@ def triple_des_decrypt_cbc(key, iv, ciphertext):
     decrypted = unpad(cipher.decrypt(ciphertext), DES3.block_size)
     return decrypted.decode()
 
-# Prueba con texto plano
 if __name__ == "__main__":
     plaintext = "Hola 3DES"  # Texto directo
 
