@@ -33,13 +33,68 @@ Con **CBC**, cada bloque es cifrado después de mezclarlo con el bloque cifrado 
 **Muy inseguro**. ECB no debe usarse para imágenes, bases de datos o cualquier dato estructurado porque mantiene patrones y puede ser vulnerable a análisis visuales o de bloques repetidos.
 
 ---
-
 ## **Ejercicio 2: Capturando Cifrado en Red con Wireshark**
 
 ### Descripción:
-Este ejercicio simulará el uso de cifrado dentro de un protocolo de comunicación y se analizará el tráfico generado utilizando **Wireshark**.
+Se implementó un sistema cliente-servidor con **sockets TCP**, donde los mensajes se cifran con **AES-CBC** antes de enviarlos a través de la red. Luego, se capturó y analizó el tráfico con **Wireshark** para evaluar la seguridad de la transmisión.
 
-### **(Pendiente de desarrollo)**
+---
+
+### **Cliente:**
+El cliente cifra mensajes con AES-CBC y los envía al servidor.
+
+```python
+def encrypt_message(message, key, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return cipher.encrypt(pad(message.encode(), AES.block_size))
+```
+
+- **key** y **IV** se generan aleatoriamente.
+- El cliente también envía la **clave e IV** al servidor (esto es solo para propósitos de demostración, no es seguro en la vida real).
+
+**Imagen de la consola del cliente:**  
+![Cliente](https://github.com/ManuelR11/CIFRADO_DE_INFORMACION/blob/f9a1e240206cfa659b5066167299bd9680d6c132/Laboratorio_3/Wireshark/Cliente.png)
+
+---
+
+### **Servidor:**
+El servidor recibe los datos cifrados, y usa la clave y IV previamente recibidos para descifrar.
+
+```python
+def decrypt_message(ciphertext, key, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    return unpad(cipher.decrypt(ciphertext), AES.block_size).decode()
+```
+
+**Imagen de la consola del servidor:**  
+![Servidor](https://github.com/ManuelR11/CIFRADO_DE_INFORMACION/blob/f9a1e240206cfa659b5066167299bd9680d6c132/Laboratorio_3/Wireshark/Server.png)
+
+---
+
+### **Imagen Wireshark**
+
+Se capturó la comunicación y se observó que los mensajes viajan **encriptados**.
+
+**Paquete con mensaje cifrado en Wireshark:**  
+![Mensaje Cifrado](https://github.com/ManuelR11/CIFRADO_DE_INFORMACION/blob/f9a1e240206cfa659b5066167299bd9680d6c132/Laboratorio_3/Wireshark/Mensaje_Cifrado.png)
+
+Se puede ver claramente cómo **el contenido del mensaje es ilegible** y aparece como bloques en hexadecimal (datos cifrados con AES).
+
+---
+
+### **Respuestas:**
+
+**• ¿Se puede identificar que los mensajes están cifrados con AES-CBC?**  
+No directamente. Wireshark solo muestra que los datos están cifrados (no hay texto plano legible), pero **no puede determinar que sea AES-CBC** sin información adicional. Solo verás datos binarios en crudo.  
+Sin embargo, un atacante que analice la longitud fija de los bloques y patrones en las comunicaciones podría sospechar que es un cifrado por bloques como AES.
+
+---
+
+**• ¿Cómo podríamos proteger más esta comunicación?**  
+- **Intercambiar la clave de forma segura**, por ejemplo, usando **Diffie-Hellman** o un protocolo como **TLS** para evitar enviar la clave e IV en claro.  
+- Utilizar **certificados y autenticación mutua** para asegurar la identidad de cliente y servidor.  
+- Agregar un **HMAC** o autenticación adicional para verificar la integridad y evitar ataques de manipulación de mensajes (como ataques de padding oracle).  
+- **Evitar reusar IVs** en múltiples mensajes con la misma clave.
 
 ---
 
